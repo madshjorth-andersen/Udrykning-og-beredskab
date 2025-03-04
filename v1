@@ -1,0 +1,36 @@
+#Udrykning og beredskab
+import random
+import pandas as pd
+
+antal_biler = 20
+uden_alarm = antal_biler // 2
+med_alarm = antal_biler // 2
+
+uden_alarm_reaktionstid = [random.randint(5, 20) for _ in range(uden_alarm)]
+med_alarm_reaktionstid = [random.randint(15, 30) for _ in range(med_alarm)]
+
+def forsinkelse_chance(reaktionstid, bilnummer):
+    if reaktionstid > 25:
+        resultat = "Forsinker ikke udrykningskøretøjet"
+        chance = 0  # 0% chance for forsinkelse
+    elif reaktionstid < 10:
+        resultat = "Forsinker køretøjet"
+        chance = 100  # 100% chance for forsinkelse
+    else:
+        resultat = "Chance for forsinkelse"
+        chance = int((25 - reaktionstid) / 15 * 100)
+
+    print(f"Bil {bilnummer}: reaktionstid {reaktionstid} - {resultat} ({chance}% chance for forsinkelse)")
+    return chance
+
+# Lister til at gemme forsinkelsesdata
+forsinkelser_uden_alarm = []
+for i, tid in enumerate(uden_alarm_reaktionstid):
+    forsinkelser_uden_alarm.append(forsinkelse_chance(tid, i + 1))
+
+forsinkelser_med_alarm = []
+for i, tid in enumerate(med_alarm_reaktionstid):
+    forsinkelser_med_alarm.append(forsinkelse_chance(tid, i + uden_alarm + 1))
+
+print("Forsinkelser uden alarm:", forsinkelser_uden_alarm)
+print("Forsinkelser med alarm:", forsinkelser_med_alarm)
